@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/app/app.routes.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1750091519177,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1750091519177,
+            "name": "Commit-0",
+            "content": "import { Routes } from '@angular/router';\r\n\r\nexport const routes: Routes = [\r\n    {path: '', redirectTo: '/products', pathMatch: 'full'},\r\n    {path: 'products', loadComponent: () => import('./COMPONENTS/add-product/add-product.component').then(c => c.AddProductComponent)},\r\n];\r\n"
+        }
+    ]
+}

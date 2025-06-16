@@ -10,9 +10,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -31,6 +32,9 @@ import { map, startWith } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule, MatTabGroup } from '@angular/material/tabs';
 
 export interface Fruit {
   name: string;
@@ -39,50 +43,34 @@ export interface Fruit {
   selector: 'app-add-product',
   standalone: true,
   imports: [
-    MatFormFieldModule,
-    MatButtonModule,
-    MatInputModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatIconModule,
-    MatChipsModule,
-    MatIconModule,
-    MatSelectModule,
-    NgFor,
-    MatExpansionModule,
     ReactiveFormsModule,
-    
+    NgFor,
+    NgIf,
+    MatTabsModule,
+    MatCardModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatExpansionModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatDividerModule,
   ],
   templateUrl: './add-product.component.html',
   styleUrl: './add-product.component.scss',
 })
 export class AddProductComponent {
-  imageUrl: any = [
+  productForm: FormGroup;
+  @ViewChild('tabGroup') tabGroup!: MatTabGroup;
+  @ViewChild('imageTabFocus', { static: false }) imageTabFocus!: ElementRef;
+  imageUrl: any[] = [
     '../../../assts/add-img.webp',
     '../../../assts/add-img.webp',
     '../../../assts/add-img.webp',
     '../../../assts/add-img.webp',
   ];
-
-
-  productForm1!: FormGroup;
-
-  options: string[] = ['s', 'm', 'l', 'xl', 'xxl'];
-  colors: string[] = ['yellow', 'white', 'pink', 'olive', 'navy', 'red'];
-  constructor(private fb: FormBuilder, private cd: ChangeDetectorRef) {
-    this.productForm1 = this.fb.group({
-      title: ['', Validators.required],
-      description: [''],
-      type: [''],
-      brand: [''],
-      collection: [[]],
-      category: [''],
-      price: [''],
-      discount: [''],
-      stock: [''],
-      newProduct: [false],
-    });
-  }
 
   typeArray = [
     { key: 'Fashion', value: 'fashion' },
@@ -117,6 +105,7 @@ export class AddProductComponent {
     { key: 'New arrival', value: 'new arrival' },
     { key: 'Trending product', value: 'trending product' },
   ];
+
   categoryArray = [
     { key: 'Fashion', value: 'Women' },
     { key: 'Shoes', value: 'shoes' },
@@ -133,19 +122,124 @@ export class AddProductComponent {
     { key: 'Marijuana', value: 'marijuana' },
   ];
 
-  ngOnInit() {
+  options: string[] = ['s', 'm', 'l', 'xl', 'xxl'];
+  colors: string[] = ['yellow', 'white', 'pink', 'olive', 'navy', 'red'];
 
+  constructor(private fb: FormBuilder) {
+    this.productForm = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      type: ['', Validators.required],
+      brand: ['', Validators.required],
+      collection: [[], Validators.required],
+      category: ['', Validators.required],
+      price: ['', Validators.required],
+      discount: ['', Validators.required],
+      stock: ['', Validators.required],
+      newProduct: [false, Validators.requiredTrue],
+      'images Details': this.fb.array([], Validators.required),
+    });
+
+    this.addImage(); // Add initial image entry
   }
 
+  get imageDetails(): FormArray {
+    return this.productForm.get('images Details') as FormArray;
+  }
+
+  newImage(): FormGroup {
+    return this.fb.group({
+      alt: ['image not found.', Validators.required],
+      src: ['', Validators.required], // base64 string
+      preview: [
+        'https://repository-images.githubusercontent.com/229240000/2b1bba00-eae1-11ea-8b31-ea57fe8a3f95',
+      ], // for UI preview only
+      'variant Details': this.fb.array(
+        [this.newVariant()],
+        Validators.required
+      ),
+    });
+  }
+
+  newVariant(): FormGroup {
+    return this.fb.group({
+      sku: ['', Validators.required],
+      size: ['', Validators.required],
+      color: ['', Validators.required],
+    });
+  }
+
+  addImage() {
+    this.imageDetails.push(this.newImage());
+  }
+
+  removeImage(index: number) {
+    this.imageDetails.removeAt(index);
+  }
+
+  getVariants(imageIndex: number): FormArray {
+    return this.imageDetails.at(imageIndex).get('variant Details') as FormArray;
+  }
+
+  addVariant(imageIndex: number) {
+    this.getVariants(imageIndex).push(this.newVariant());
+  }
+
+  removeVariant(imageIndex: number, variantIndex: number) {
+    this.getVariants(imageIndex).removeAt(variantIndex);
+  }
+
+  async onFileChange(event: any, imageIndex: number) {
+    const file = event.target.files[0];
+    if (file) {
+      const base64 = await this.convertToBase64(file);
+      const group = this.imageDetails.at(imageIndex);
+      group.patchValue({ src: base64, preview: base64 });
+    }
+  }
+
+  convertToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  }
 
   jsonTest() {
-    if (this.productForm1.valid) {
-      const formData = this.productForm1.value;
+    console.log('Form Data:', this.productForm.value);
 
+    if (this.productForm.valid) {
+      const formData = JSON.parse(JSON.stringify(this.productForm.value));
+      formData['images Details'].forEach((img: any) => delete img.preview);
       formData.sale = true;
-      console.log('Form Data:', this.productForm1.value);
+      (formData.tags = ['s', 'm', 'pink', 'blue', 'biba']),
+        console.log('Final Payload:', formData);
     } else {
-      this.productForm1.markAllAsTouched();
+      this.markFormGroupTouched(this.productForm);
+      console.warn('Form Invalid:', this.productForm);
     }
+  }
+
+  markFormGroupTouched(formGroup: FormGroup | FormArray) {
+    (Object as any).values(formGroup.controls).forEach((control: any) => {
+      if (control.controls) {
+        this.markFormGroupTouched(control); // recurse
+      } else {
+        control.markAsTouched();
+      }
+    });
+  }
+
+  goToTab(index: number) {
+    this.tabGroup.selectedIndex = index;
+
+    // Allow time for tab change before shifting focus
+    setTimeout(() => {
+      if (index === 1 && this.imageTabFocus) {
+        this.imageTabFocus.nativeElement.focus();
+      }
+    }, 200); // Delay ensures tab is visible before focusing
   }
 }
