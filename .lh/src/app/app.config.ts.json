@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/app/app.config.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1749784622103,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1749784622103,
+            "name": "Commit-0",
+            "content": "import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';\r\nimport { provideRouter } from '@angular/router';\r\n\r\nimport { routes } from './app.routes';\r\nimport { provideClientHydration } from '@angular/platform-browser';\r\nimport { provideAnimationsAsync } from '@angular/platform-browser/animations/async';\r\nimport { provideHttpClient } from '@angular/common/http';\r\n\r\nexport const appConfig: ApplicationConfig = {\r\n  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideAnimationsAsync(),provideHttpClient()]\r\n};\r\n"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+mat-card {
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+img {
+  border-radius: 10px;
+  max-height: 150px;
+  margin-top: 10px;
+}
+
+button[mat-icon-button] mat-icon {
+  color: #dc3545; // Red delete icon
+}
