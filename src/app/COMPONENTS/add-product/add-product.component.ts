@@ -35,6 +35,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule, MatTabGroup } from '@angular/material/tabs';
+import { ProductService } from '../../services/product.service';
 
 export interface Fruit {
   name: string;
@@ -90,6 +91,7 @@ export class AddProductComponent {
 
   brandArray = [
     { key: 'Nike', value: 'nike' },
+    {key:'Iphone', value: 'iphone'},
     { key: 'Zara', value: 'zara' },
     { key: 'Denim', value: 'denim' },
     { key: 'Madame', value: 'madame' },
@@ -125,7 +127,7 @@ export class AddProductComponent {
   options: string[] = ['s', 'm', 'l', 'xl', 'xxl'];
   colors: string[] = ['yellow', 'white', 'pink', 'olive', 'navy', 'red'];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private productService: ProductService) {
     this.productForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -151,9 +153,6 @@ export class AddProductComponent {
     return this.fb.group({
       alt: ['image not found.', Validators.required],
       src: ['', Validators.required], // base64 string
-      preview: [
-        'https://repository-images.githubusercontent.com/229240000/2b1bba00-eae1-11ea-8b31-ea57fe8a3f95',
-      ], // for UI preview only
       'variant Details': this.fb.array(
         [this.newVariant()],
         Validators.required
@@ -207,18 +206,34 @@ export class AddProductComponent {
     });
   }
 
-  jsonTest() {
-    console.log('Form Data:', this.productForm.value);
-
+  Submit() {
     if (this.productForm.valid) {
       const formData = JSON.parse(JSON.stringify(this.productForm.value));
-      formData['images Details'].forEach((img: any) => delete img.preview);
+
+      // Clean preview fields if present
+      formData['images Details'].forEach((img: any) => {
+        delete img.preview;
+      });
+
+      // Static values
       formData.sale = true;
-      (formData.tags = ['s', 'm', 'pink', 'blue', 'biba']),
-        console.log('Final Payload:', formData);
+      formData.tags = ['s', 'm', 'pink', 'blue', 'biba'];
+
+      // Call service
+      this.productService.createProduct(formData).subscribe({
+        next: (res) => {
+          console.log('✅ Product created:', res);
+          alert('Product created successfully!');
+          this.productForm.reset();
+        },
+        error: (err) => {
+          console.error('❌ Error creating product:', err);
+          alert('Failed to create product.');
+        },
+      });
     } else {
       this.markFormGroupTouched(this.productForm);
-      console.warn('Form Invalid:', this.productForm);
+      console.warn('⚠️ Form Invalid');
     }
   }
 

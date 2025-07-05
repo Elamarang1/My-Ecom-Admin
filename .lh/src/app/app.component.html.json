@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 10,
+            "activePatchIndex": 17,
             "patches": [
                 {
                     "date": 1749782691589,
@@ -48,6 +48,34 @@
                 {
                     "date": 1750091451184,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,1 @@\n-<app-add-product></app-add-product>\n\\ No newline at end of file\n+<router-outlet></router-outlet>\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1750662205237,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,1 @@\n-<router-outlet></router-outlet>\n\\ No newline at end of file\n+<!-- <router-outlet></router-outlet> -->\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1750662238419,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,1 +1,22 @@\n-<!-- <router-outlet></router-outlet> -->\n\\ No newline at end of file\n+<!-- <router-outlet></router-outlet> -->\r\n+\r\n+<div class=\"scroll-container-wrapper\">\r\n+  <button class=\"scroll-btn left\" (click)=\"scrollLeft()\">&#x25C0;</button>\r\n+\r\n+  <div class=\"scroll-container\" #scrollContainer>\r\n+    <table class=\"table table-bordered\">\r\n+      <thead>\r\n+        <tr>\r\n+          <th *ngFor=\"let col of columns\">{{ col }}</th>\r\n+        </tr>\r\n+      </thead>\r\n+      <tbody>\r\n+        <tr *ngFor=\"let row of data\">\r\n+          <td *ngFor=\"let col of columns\">{{ row[col] }}</td>\r\n+        </tr>\r\n+      </tbody>\r\n+    </table>\r\n+  </div>\r\n+\r\n+  <button class=\"scroll-btn right\" (click)=\"scrollRight()\">&#x25B6;</button>\r\n+</div>\r\n"
+                },
+                {
+                    "date": 1750693965594,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n <!-- <router-outlet></router-outlet> -->\r\n-\r\n+<!-- \r\n <div class=\"scroll-container-wrapper\">\r\n   <button class=\"scroll-btn left\" (click)=\"scrollLeft()\">&#x25C0;</button>\r\n \r\n   <div class=\"scroll-container\" #scrollContainer>\r\n@@ -18,5 +18,5 @@\n     </table>\r\n   </div>\r\n \r\n   <button class=\"scroll-btn right\" (click)=\"scrollRight()\">&#x25B6;</button>\r\n-</div>\r\n+</div> -->\r\n"
+                },
+                {
+                    "date": 1751084140388,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-<!-- <router-outlet></router-outlet> -->\r\n+<router-outlet></router-outlet>\r\n <!-- \r\n <div class=\"scroll-container-wrapper\">\r\n   <button class=\"scroll-btn left\" (click)=\"scrollLeft()\">&#x25C0;</button>\r\n \r\n@@ -19,4 +19,7 @@\n   </div>\r\n \r\n   <button class=\"scroll-btn right\" (click)=\"scrollRight()\">&#x25B6;</button>\r\n </div> -->\r\n+\r\n+\r\n+<app-test></app-test>\r\n"
+                },
+                {
+                    "date": 1751084586692,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-<router-outlet></router-outlet>\r\n+<!-- <router-outlet></router-outlet> -->\r\n <!-- \r\n <div class=\"scroll-container-wrapper\">\r\n   <button class=\"scroll-btn left\" (click)=\"scrollLeft()\">&#x25C0;</button>\r\n \r\n"
+                },
+                {
+                    "date": 1751738808529,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-<!-- <router-outlet></router-outlet> -->\r\n+<router-outlet></router-outlet>\r\n <!-- \r\n <div class=\"scroll-container-wrapper\">\r\n   <button class=\"scroll-btn left\" (click)=\"scrollLeft()\">&#x25C0;</button>\r\n \r\n@@ -21,5 +21,5 @@\n   <button class=\"scroll-btn right\" (click)=\"scrollRight()\">&#x25B6;</button>\r\n </div> -->\r\n \r\n \r\n-<app-test></app-test>\r\n+<!-- <app-test></app-test> -->\r\n"
+                },
+                {
+                    "date": 1751739737626,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,25 +1,1 @@\n <router-outlet></router-outlet>\r\n-<!-- \r\n-<div class=\"scroll-container-wrapper\">\r\n-  <button class=\"scroll-btn left\" (click)=\"scrollLeft()\">&#x25C0;</button>\r\n-\r\n-  <div class=\"scroll-container\" #scrollContainer>\r\n-    <table class=\"table table-bordered\">\r\n-      <thead>\r\n-        <tr>\r\n-          <th *ngFor=\"let col of columns\">{{ col }}</th>\r\n-        </tr>\r\n-      </thead>\r\n-      <tbody>\r\n-        <tr *ngFor=\"let row of data\">\r\n-          <td *ngFor=\"let col of columns\">{{ row[col] }}</td>\r\n-        </tr>\r\n-      </tbody>\r\n-    </table>\r\n-  </div>\r\n-\r\n-  <button class=\"scroll-btn right\" (click)=\"scrollRight()\">&#x25B6;</button>\r\n-</div> -->\r\n-\r\n-\r\n-<!-- <app-test></app-test> -->\r\n"
                 }
             ],
             "date": 1749782691589,

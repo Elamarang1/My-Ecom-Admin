@@ -1,0 +1,26 @@
+{
+    "sourceFile": "src/app/services/api.service.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1751083023111,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1751084313636,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,11 @@\n const GOOGLE_MAPS_API_KEY = 'AIzaSyCaKbVhcX_22R_pRKDYuNA7vox-PtGaDkI';\r\n \r\n export type Maps = typeof google.maps;\r\n \r\n-@Injectable()\r\n+@Injectable({\r\n+  providedIn: 'root' // ✅ This makes it globally available\r\n+})\r\n export class ApiService {\r\n \r\n   public readonly api = this.load();\r\n \r\n"
+                },
+                {
+                    "date": 1751084449642,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,46 +1,52 @@\n-import { Injectable } from '@angular/core';\r\n+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';\r\n+import { isPlatformBrowser } from '@angular/common';\r\n \r\n const GOOGLE_MAPS_API_KEY = 'AIzaSyCaKbVhcX_22R_pRKDYuNA7vox-PtGaDkI';\r\n \r\n export type Maps = typeof google.maps;\r\n \r\n @Injectable({\r\n-  providedIn: 'root' // ✅ This makes it globally available\r\n+  providedIn: 'root'\r\n })\r\n export class ApiService {\r\n \r\n-  public readonly api = this.load();\r\n+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}\r\n \r\n-  private load(): Promise<Maps> {\r\n+  public load(): Promise<Maps> {\r\n+    if (!isPlatformBrowser(this.platformId)) {\r\n+      return Promise.reject('Not in browser context');\r\n+    }\r\n+\r\n+    const callbackName = `GooglePlaces_cb_` + ((Math.random() * 1e9) >>> 0);\r\n+\r\n     const script = document.createElement('script');\r\n     script.type = 'text/javascript';\r\n     script.async = true;\r\n     script.defer = true;\r\n-    // tslint:disable-next-line:no-bitwise\r\n-    const callbackName = `GooglePlaces_cb_` + ((Math.random() * 1e9) >>> 0);\r\n     script.src = this.getScriptSrc(callbackName);\r\n \r\n-    interface MyWindow { [name: string]: Function; };\r\n+    interface MyWindow { [key: string]: Function; }\r\n     const myWindow: MyWindow = window as any;\r\n \r\n-    const promise = new Promise((resolve, reject) => {\r\n-      myWindow[callbackName] = resolve;\r\n+    const promise = new Promise<Maps>((resolve, reject) => {\r\n+      myWindow[callbackName] = () => resolve(google.maps);\r\n       script.onerror = reject;\r\n     });\r\n+\r\n     document.body.appendChild(script);\r\n-    return promise.then(() => google.maps);\r\n+    return promise;\r\n   }\r\n \r\n   private getScriptSrc(callback: string): string {\r\n-    interface QueryParams { [key: string]: string; };\r\n-    const query: QueryParams = {\r\n+    const query = {\r\n       v: '3',\r\n       callback,\r\n       key: GOOGLE_MAPS_API_KEY,\r\n       libraries: 'places',\r\n+      language: 'fr'\r\n     };\r\n-    const params = Object.keys(query).map(key => `${key}=${query[key]}`).join('&');\r\n-    return `//maps.googleapis.com/maps/api/js?${params}&language=fr`;\r\n+\r\n+    const params = Object.entries(query).map(([key, val]) => `${key}=${val}`).join('&');\r\n+    return `https://maps.googleapis.com/maps/api/js?${params}`;\r\n   }\r\n-\r\n }\r\n"
+                }
+            ],
+            "date": 1751083023110,
+            "name": "Commit-0",
+            "content": "import { Injectable } from '@angular/core';\r\n\r\nconst GOOGLE_MAPS_API_KEY = 'AIzaSyCaKbVhcX_22R_pRKDYuNA7vox-PtGaDkI';\r\n\r\nexport type Maps = typeof google.maps;\r\n\r\n@Injectable()\r\nexport class ApiService {\r\n\r\n  public readonly api = this.load();\r\n\r\n  private load(): Promise<Maps> {\r\n    const script = document.createElement('script');\r\n    script.type = 'text/javascript';\r\n    script.async = true;\r\n    script.defer = true;\r\n    // tslint:disable-next-line:no-bitwise\r\n    const callbackName = `GooglePlaces_cb_` + ((Math.random() * 1e9) >>> 0);\r\n    script.src = this.getScriptSrc(callbackName);\r\n\r\n    interface MyWindow { [name: string]: Function; };\r\n    const myWindow: MyWindow = window as any;\r\n\r\n    const promise = new Promise((resolve, reject) => {\r\n      myWindow[callbackName] = resolve;\r\n      script.onerror = reject;\r\n    });\r\n    document.body.appendChild(script);\r\n    return promise.then(() => google.maps);\r\n  }\r\n\r\n  private getScriptSrc(callback: string): string {\r\n    interface QueryParams { [key: string]: string; };\r\n    const query: QueryParams = {\r\n      v: '3',\r\n      callback,\r\n      key: GOOGLE_MAPS_API_KEY,\r\n      libraries: 'places',\r\n    };\r\n    const params = Object.keys(query).map(key => `${key}=${query[key]}`).join('&');\r\n    return `//maps.googleapis.com/maps/api/js?${params}&language=fr`;\r\n  }\r\n\r\n}\r\n"
+        }
+    ]
+}

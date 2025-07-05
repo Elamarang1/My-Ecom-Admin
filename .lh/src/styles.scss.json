@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/styles.scss",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1751114811017,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1751114811017,
+            "name": "Commit-0",
+            "content": "/* You can add global styles to this file, and also import other style files */\n\nhtml, body { height: 100%; }\nbody { margin: 0;overflow: auto; font-family: Roboto, \"Helvetica Neue\", sans-serif; }\n"
+        }
+    ]
+}

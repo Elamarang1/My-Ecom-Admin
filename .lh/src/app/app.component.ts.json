@@ -3,11 +3,63 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 13,
             "patches": [
                 {
                     "date": 1749784392618,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1750662235980,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { Component } from '@angular/core';\r\n+import { Component, ElementRef, ViewChild } from '@angular/core';\r\n import { RouterOutlet } from '@angular/router';\r\n import { AddProductComponent } from './COMPONENTS/add-product/add-product.component';\r\n import { TestComponent } from \"./test/test.component\";\r\n \r\n@@ -10,6 +10,25 @@\n   templateUrl: './app.component.html',\r\n   styleUrl: './app.component.scss'\r\n })\r\n export class AppComponent {\r\n-  title = 'app';\r\n+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;\r\n+\r\n+  columns = ['ID', 'Name', 'Age', 'Email', 'Phone', 'City', 'Country'];\r\n+  data = Array.from({ length: 10 }, (_, i) => ({\r\n+    ID: i + 1,\r\n+    Name: `Name ${i + 1}`,\r\n+    Age: 20 + i,\r\n+    Email: `user${i + 1}@mail.com`,\r\n+    Phone: `123456789${i}`,\r\n+    City: `City ${i + 1}`,\r\n+    Country: 'India',\r\n+  }));\r\n+\r\n+  scrollRight() {\r\n+    this.scrollContainer.nativeElement.scrollLeft += 100;\r\n+  }\r\n+\r\n+  scrollLeft() {\r\n+    this.scrollContainer.nativeElement.scrollLeft -= 100;\r\n+  }\r\n }\r\n"
+                },
+                {
+                    "date": 1750662290074,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,13 +1,14 @@\n import { Component, ElementRef, ViewChild } from '@angular/core';\r\n import { RouterOutlet } from '@angular/router';\r\n import { AddProductComponent } from './COMPONENTS/add-product/add-product.component';\r\n import { TestComponent } from \"./test/test.component\";\r\n+import { NgFor } from '@angular/common';\r\n \r\n @Component({\r\n   selector: 'app-root',\r\n   standalone: true,\r\n-  imports: [RouterOutlet, AddProductComponent, TestComponent],\r\n+  imports: [RouterOutlet, AddProductComponent, TestComponent, NgFor],\r\n   templateUrl: './app.component.html',\r\n   styleUrl: './app.component.scss'\r\n })\r\n export class AppComponent {\r\n"
+                },
+                {
+                    "date": 1750662371461,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n export class AppComponent {\r\n   @ViewChild('scrollContainer') scrollContainer!: ElementRef;\r\n \r\n   columns = ['ID', 'Name', 'Age', 'Email', 'Phone', 'City', 'Country'];\r\n-  data = Array.from({ length: 10 }, (_, i) => ({\r\n+  data:any = Array.from({ length: 10 }, (_, i) => ({\r\n     ID: i + 1,\r\n     Name: `Name ${i + 1}`,\r\n     Age: 20 + i,\r\n     Email: `user${i + 1}@mail.com`,\r\n"
+                },
+                {
+                    "date": 1750662504386,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,19 +13,29 @@\n })\r\n export class AppComponent {\r\n   @ViewChild('scrollContainer') scrollContainer!: ElementRef;\r\n \r\n-  columns = ['ID', 'Name', 'Age', 'Email', 'Phone', 'City', 'Country'];\r\n-  data:any = Array.from({ length: 10 }, (_, i) => ({\r\n-    ID: i + 1,\r\n-    Name: `Name ${i + 1}`,\r\n-    Age: 20 + i,\r\n-    Email: `user${i + 1}@mail.com`,\r\n-    Phone: `123456789${i}`,\r\n-    City: `City ${i + 1}`,\r\n-    Country: 'India',\r\n-  }));\r\n+columns: (keyof any)[] = [\r\n+  'ID', 'Name', 'Age', 'Email', 'Phone', 'City', 'Country',\r\n+  'Zip', 'Department', 'Role', 'Salary', 'Status'\r\n+];\r\n \r\n+data: any[] = Array.from({ length: 10 }, (_, i) => ({\r\n+  ID: i + 1,\r\n+  Name: `Name ${i + 1}`,\r\n+  Age: 20 + i,\r\n+  Email: `user${i + 1}@mail.com`,\r\n+  Phone: `123456789${i}`,\r\n+  City: `City ${i + 1}`,\r\n+  Country: 'India',\r\n+  Zip: `6000${i}`,\r\n+  Department: 'IT',\r\n+  Role: 'Developer',\r\n+  Salary: 30000 + i * 1000,\r\n+  Status: 'Active',\r\n+}));\r\n+\r\n+\r\n   scrollRight() {\r\n     this.scrollContainer.nativeElement.scrollLeft += 100;\r\n   }\r\n \r\n"
+                },
+                {
+                    "date": 1750662574836,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n   @ViewChild('scrollContainer') scrollContainer!: ElementRef;\r\n \r\n columns: (keyof any)[] = [\r\n   'ID', 'Name', 'Age', 'Email', 'Phone', 'City', 'Country',\r\n-  'Zip', 'Department', 'Role', 'Salary', 'Status'\r\n+  'Zip', 'Department', 'Role', 'Salary','Salary','Salary','Salary', 'Status'\r\n ];\r\n \r\n data: any[] = Array.from({ length: 10 }, (_, i) => ({\r\n   ID: i + 1,\r\n@@ -30,8 +30,11 @@\n   Zip: `6000${i}`,\r\n   Department: 'IT',\r\n   Role: 'Developer',\r\n   Salary: 30000 + i * 1000,\r\n+    Salary: 30000 + i * 1000,\r\n+      Salary: 30000 + i * 1000,\r\n+        Salary: 30000 + i * 1000,\r\n   Status: 'Active',\r\n }));\r\n \r\n \r\n"
+                },
+                {
+                    "date": 1750662593151,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n   @ViewChild('scrollContainer') scrollContainer!: ElementRef;\r\n \r\n columns: (keyof any)[] = [\r\n   'ID', 'Name', 'Age', 'Email', 'Phone', 'City', 'Country',\r\n-  'Zip', 'Department', 'Role', 'Salary','Salary','Salary','Salary', 'Status'\r\n+  'Zip', 'Department', 'Role', 'Salary','Salary1','Salary2','Salary3', 'Status'\r\n ];\r\n \r\n data: any[] = Array.from({ length: 10 }, (_, i) => ({\r\n   ID: i + 1,\r\n@@ -30,11 +30,11 @@\n   Zip: `6000${i}`,\r\n   Department: 'IT',\r\n   Role: 'Developer',\r\n   Salary: 30000 + i * 1000,\r\n-    Salary: 30000 + i * 1000,\r\n-      Salary: 30000 + i * 1000,\r\n-        Salary: 30000 + i * 1000,\r\n+    Salary1: 30000 + i * 1000,\r\n+      Salary2: 30000 + i * 1000,\r\n+        Salary3: 30000 + i * 1000,\r\n   Status: 'Active',\r\n }));\r\n \r\n \r\n"
+                },
+                {
+                    "date": 1750662677816,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,9 @@\n   @ViewChild('scrollContainer') scrollContainer!: ElementRef;\r\n \r\n columns: (keyof any)[] = [\r\n   'ID', 'Name', 'Age', 'Email', 'Phone', 'City', 'Country',\r\n-  'Zip', 'Department', 'Role', 'Salary','Salary1','Salary2','Salary3', 'Status'\r\n+  'Zip', 'Department', 'Role', 'Salary','Salary1','Salary2','Salary3','Salary4','Salary5','Salary6','Salary7','Salary8','Salary9','Salary0', 'Status'\r\n ];\r\n \r\n data: any[] = Array.from({ length: 10 }, (_, i) => ({\r\n   ID: i + 1,\r\n@@ -33,8 +33,16 @@\n   Salary: 30000 + i * 1000,\r\n     Salary1: 30000 + i * 1000,\r\n       Salary2: 30000 + i * 1000,\r\n         Salary3: 30000 + i * 1000,\r\n+        Salary4: 30000 + i * 1000,\r\n+        Salary5: 30000 + i * 1000,\r\n+        Salary6: 30000 + i * 1000,\r\n+        Salary7: 30000 + i * 1000,\r\n+        Salary8: 30000 + i * 1000,\r\n+\r\n+        Salary9: 30000 + i * 1000,\r\n+        Salary0: 30000 + i * 1000,\r\n   Status: 'Active',\r\n }));\r\n \r\n \r\n"
+                },
+                {
+                    "date": 1750665856405,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,9 +46,12 @@\n }));\r\n \r\n \r\n   scrollRight() {\r\n+\r\n     this.scrollContainer.nativeElement.scrollLeft += 100;\r\n+\r\n+    console.log('this.scrollContainer.nativeElement.scrollLeft ',this.scrollContainer.nativeElement.scrollLeft )\r\n   }\r\n \r\n   scrollLeft() {\r\n     this.scrollContainer.nativeElement.scrollLeft -= 100;\r\n"
+                },
+                {
+                    "date": 1750665934381,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -53,7 +53,9 @@\n     console.log('this.scrollContainer.nativeElement.scrollLeft ',this.scrollContainer.nativeElement.scrollLeft )\r\n   }\r\n \r\n   scrollLeft() {\r\n+\r\n+    console.log('test')\r\n     this.scrollContainer.nativeElement.scrollLeft -= 100;\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1750666006231,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,16 +46,16 @@\n }));\r\n \r\n \r\n   scrollRight() {\r\n-\r\n+ alert('tet')\r\n     this.scrollContainer.nativeElement.scrollLeft += 100;\r\n \r\n     console.log('this.scrollContainer.nativeElement.scrollLeft ',this.scrollContainer.nativeElement.scrollLeft )\r\n   }\r\n \r\n   scrollLeft() {\r\n-\r\n+    alert('tet')\r\n     console.log('test')\r\n     this.scrollContainer.nativeElement.scrollLeft -= 100;\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1750666078209,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,6 +56,7 @@\n   scrollLeft() {\r\n     alert('tet')\r\n     console.log('test')\r\n     this.scrollContainer.nativeElement.scrollLeft -= 100;\r\n+     console.log('this.scrollContainer.nativeElement.scrollLeft ',this.scrollContainer.nativeElement.scrollLeft )\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1750666111734,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,17 +46,15 @@\n }));\r\n \r\n \r\n   scrollRight() {\r\n- alert('tet')\r\n+\r\n     this.scrollContainer.nativeElement.scrollLeft += 100;\r\n \r\n     console.log('this.scrollContainer.nativeElement.scrollLeft ',this.scrollContainer.nativeElement.scrollLeft )\r\n   }\r\n \r\n   scrollLeft() {\r\n-    alert('tet')\r\n-    console.log('test')\r\n     this.scrollContainer.nativeElement.scrollLeft -= 100;\r\n      console.log('this.scrollContainer.nativeElement.scrollLeft ',this.scrollContainer.nativeElement.scrollLeft )\r\n   }\r\n }\r\n"
+                },
+                {
+                    "date": 1751739773051,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,55 +6,11 @@\n \r\n @Component({\r\n   selector: 'app-root',\r\n   standalone: true,\r\n-  imports: [RouterOutlet, AddProductComponent, TestComponent, NgFor],\r\n+  imports: [RouterOutlet],\r\n   templateUrl: './app.component.html',\r\n   styleUrl: './app.component.scss'\r\n })\r\n-export class AppComponent {\r\n-  @ViewChild('scrollContainer') scrollContainer!: ElementRef;\r\n+export class AppComponent{\r\n \r\n-columns: (keyof any)[] = [\r\n-  'ID', 'Name', 'Age', 'Email', 'Phone', 'City', 'Country',\r\n-  'Zip', 'Department', 'Role', 'Salary','Salary1','Salary2','Salary3','Salary4','Salary5','Salary6','Salary7','Salary8','Salary9','Salary0', 'Status'\r\n-];\r\n-\r\n-data: any[] = Array.from({ length: 10 }, (_, i) => ({\r\n-  ID: i + 1,\r\n-  Name: `Name ${i + 1}`,\r\n-  Age: 20 + i,\r\n-  Email: `user${i + 1}@mail.com`,\r\n-  Phone: `123456789${i}`,\r\n-  City: `City ${i + 1}`,\r\n-  Country: 'India',\r\n-  Zip: `6000${i}`,\r\n-  Department: 'IT',\r\n-  Role: 'Developer',\r\n-  Salary: 30000 + i * 1000,\r\n-    Salary1: 30000 + i * 1000,\r\n-      Salary2: 30000 + i * 1000,\r\n-        Salary3: 30000 + i * 1000,\r\n-        Salary4: 30000 + i * 1000,\r\n-        Salary5: 30000 + i * 1000,\r\n-        Salary6: 30000 + i * 1000,\r\n-        Salary7: 30000 + i * 1000,\r\n-        Salary8: 30000 + i * 1000,\r\n-\r\n-        Salary9: 30000 + i * 1000,\r\n-        Salary0: 30000 + i * 1000,\r\n-  Status: 'Active',\r\n-}));\r\n-\r\n-\r\n-  scrollRight() {\r\n-\r\n-    this.scrollContainer.nativeElement.scrollLeft += 100;\r\n-\r\n-    console.log('this.scrollContainer.nativeElement.scrollLeft ',this.scrollContainer.nativeElement.scrollLeft )\r\n-  }\r\n-\r\n-  scrollLeft() {\r\n-    this.scrollContainer.nativeElement.scrollLeft -= 100;\r\n-     console.log('this.scrollContainer.nativeElement.scrollLeft ',this.scrollContainer.nativeElement.scrollLeft )\r\n-  }\r\n-}\r\n+}\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1749784392618,

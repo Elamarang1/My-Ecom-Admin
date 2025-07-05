@@ -1,0 +1,18 @@
+{
+    "sourceFile": "tsconfig.app.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1751083986790,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1751083986790,
+            "name": "Commit-0",
+            "content": "/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */\r\n/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */\r\n{\r\n  \"extends\": \"./tsconfig.json\",\r\n  \"compilerOptions\": {\r\n    \"outDir\": \"./out-tsc/app\",\r\n    \"types\": [\r\n      \"node\",\r\n      \"google.maps\"\r\n    ]\r\n  },\r\n  \"files\": [\r\n    \"src/main.ts\",\r\n    \"src/main.server.ts\",\r\n    \"server.ts\"\r\n  ],\r\n  \"include\": [\r\n    \"src/**/*.d.ts\"\r\n  ]\r\n}\r\n"
+        }
+    ]
+}

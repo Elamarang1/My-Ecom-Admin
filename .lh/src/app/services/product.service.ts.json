@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/app/services/product.service.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1750347837516,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1750347837516,
+            "name": "Commit-0",
+            "content": "import { Injectable } from '@angular/core';\r\nimport { HttpClient } from '@angular/common/http';\r\nimport { Observable } from 'rxjs';\r\n\r\n@Injectable({\r\n  providedIn: 'root'\r\n})\r\nexport class ProductService {\r\n  private apiUrl = 'http://localhost:3000/api/products'; // Update with your actual URL\r\n\r\n  constructor(private http: HttpClient) {}\r\n\r\n  // Create product\r\n  createProduct(productData: any): Observable<any> {\r\n    return this.http.post(this.apiUrl, productData);\r\n  }\r\n\r\n  // Get all products\r\n  getAllProducts(): Observable<any> {\r\n    return this.http.get(this.apiUrl);\r\n  }\r\n\r\n  // Get product by ID\r\n  getProductById(id: string): Observable<any> {\r\n    return this.http.get(`${this.apiUrl}/${id}`);\r\n  }\r\n\r\n  // Update product\r\n  updateProduct(id: string, productData: any): Observable<any> {\r\n    return this.http.put(`${this.apiUrl}/${id}`, productData);\r\n  }\r\n\r\n  // Delete product\r\n  deleteProduct(id: string): Observable<any> {\r\n    return this.http.delete(`${this.apiUrl}/${id}`);\r\n  }\r\n}\r\n"
+        }
+    ]
+}
