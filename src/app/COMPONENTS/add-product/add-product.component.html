@@ -184,15 +184,18 @@
                               [formGroupName]="j"
                               class="row g-3 align-items-center mb-2"
                             >
-                              <div class="col-md-3">
-                                <mat-form-field
-                                  appearance="outline"
-                                  class="w-100"
-                                >
-                                  <mat-label>SKU</mat-label>
-                                  <input matInput formControlName="sku" />
-                                </mat-form-field>
-                              </div>
+<!-- SKU (Dropdown) -->
+<div class="col-md-3">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>SKU</mat-label>
+    <mat-select formControlName="sku">
+      <mat-option *ngFor="let sku of skuOptions" [value]="sku">
+        {{ sku }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
 
                               <div class="col-md-3">
                                 <mat-form-field
@@ -204,15 +207,17 @@
                                 </mat-form-field>
                               </div>
 
-                              <div class="col-md-3">
-                                <mat-form-field
-                                  appearance="outline"
-                                  class="w-100"
-                                >
-                                  <mat-label>Color</mat-label>
-                                  <input matInput formControlName="color" />
-                                </mat-form-field>
-                              </div>
+    <!-- Color (Dropdown) -->
+    <div class="col-md-3">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Color</mat-label>
+        <mat-select formControlName="color">
+          <mat-option *ngFor="let color of colorOptions" [value]="color">
+            {{ color }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
                               <div class="col-md-3 d-flex align-items-center">
                                 <button
@@ -280,3 +285,7 @@
     </div>
   </div>
 </div>
+
+
+
+<app-product-list [listUpdate]="checker" (dataEmitter)="patchFormData($event)"></app-product-list>

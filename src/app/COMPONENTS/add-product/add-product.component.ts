@@ -36,6 +36,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule, MatTabGroup } from '@angular/material/tabs';
 import { ProductService } from '../../services/product.service';
+import { ProductListComponent } from "../product-list/product-list.component";
 
 export interface Fruit {
   name: string;
@@ -58,12 +59,15 @@ export interface Fruit {
     MatAutocompleteModule,
     MatSelectModule,
     MatDividerModule,
-  ],
+    ProductListComponent
+],
   templateUrl: './add-product.component.html',
   styleUrl: './add-product.component.scss',
 })
 export class AddProductComponent {
   productForm: FormGroup;
+  productIdToUpdate: string | null = null;
+  checker:any
   @ViewChild('tabGroup') tabGroup!: MatTabGroup;
   @ViewChild('imageTabFocus', { static: false }) imageTabFocus!: ElementRef;
   imageUrl: any[] = [
@@ -123,9 +127,11 @@ export class AddProductComponent {
     { key: 'Gym', value: 'gym' },
     { key: 'Marijuana', value: 'marijuana' },
   ];
-
+skuOptions: string[] = ['SKU-001', 'SKU-002', 'SKU-003', 'SKU-004'];
   options: string[] = ['s', 'm', 'l', 'xl', 'xxl'];
   colors: string[] = ['yellow', 'white', 'pink', 'olive', 'navy', 'red'];
+sizeOptions: string[] = ['XS', 'S', 'M', 'L', 'XL'];
+colorOptions: string[] = ['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow', 'Pink'];
 
   constructor(private fb: FormBuilder, private productService: ProductService) {
     this.productForm = this.fb.group({
@@ -143,6 +149,8 @@ export class AddProductComponent {
     });
 
     this.addImage(); // Add initial image entry
+
+
   }
 
   get imageDetails(): FormArray {
@@ -163,7 +171,7 @@ export class AddProductComponent {
   newVariant(): FormGroup {
     return this.fb.group({
       sku: ['', Validators.required],
-      size: ['', Validators.required],
+      size: ['0', Validators.required],
       color: ['', Validators.required],
     });
   }
@@ -206,36 +214,141 @@ export class AddProductComponent {
     });
   }
 
-  Submit() {
-    if (this.productForm.valid) {
-      const formData = JSON.parse(JSON.stringify(this.productForm.value));
+  // Submit() {
+  //   if (this.productForm.valid) {
+  //     const formData = JSON.parse(JSON.stringify(this.productForm.value));
 
-      // Clean preview fields if present
-      formData['images Details'].forEach((img: any) => {
-        delete img.preview;
+  //     // Clean preview fields if present
+  //     formData['images Details'].forEach((img: any) => {
+  //       delete img.preview;
+  //     });
+
+  //     // Static values
+  //     formData.sale = true;
+  //     formData.tags = ['s', 'm', 'pink', 'blue', 'biba'];
+
+  //     // Call service
+  //     this.productService.createProduct(formData).subscribe({
+  //       next: (res) => {
+  //         console.log('✅ Product created:', res);
+  //         alert('Product created successfully!');
+  //         this.productForm.reset();
+  //       },
+  //       error: (err) => {
+  //         console.error('❌ Error creating product:', err);
+  //         alert('Failed to create product.');
+  //       },
+  //     });
+  //   } else {
+  //     this.markFormGroupTouched(this.productForm);
+  //     console.warn('⚠️ Form Invalid');
+  //   }
+  // }
+
+
+//   Submit() {
+//   if (this.productForm.valid) {
+//     const formData = JSON.parse(JSON.stringify(this.productForm.value));
+
+//     // Clean up previews
+//     formData['images Details'].forEach((img: any) => {
+//       delete img.preview;
+//     });
+
+//     formData.sale = true;
+//     formData.tags = ['s', 'm', 'pink', 'blue', 'biba'];
+
+//     if (this.productIdToUpdate) {
+//       // 🔄 Update
+//       this.productService.updateProduct(this.productIdToUpdate, formData).subscribe({
+//         next: (res) => {
+//           console.log('✅ Product updated:', res);
+//           alert('Product updated successfully!');
+//           this.productForm.reset();
+//           this.productIdToUpdate = null; // Reset after update
+//         },
+//         error: (err) => {
+//           console.error('❌ Error updating product:', err);
+//           alert('Failed to update product.');
+//         },
+//       });
+//     } else {
+//       // 🆕 Create
+//       this.productService.createProduct(formData).subscribe({
+//         next: (res) => {
+//           console.log('✅ Product created:', res);
+//           alert('Product created successfully!');
+//           this.productForm.reset();
+//         },
+//         error: (err) => {
+//           console.error('❌ Error creating product:', err);
+//           alert('Failed to create product.');
+//         },
+//       });
+//     }
+//   } else {
+//     this.markFormGroupTouched(this.productForm);
+//     console.warn('⚠️ Form Invalid');
+//   }
+// }
+
+
+Submit() {
+  console.log('Form Submitted:', this.productForm.value);
+  if (this.productForm.valid) {
+    this.checker = 'valid'
+    const formData = JSON.parse(JSON.stringify(this.productForm.value));
+
+    formData['images Details'].forEach((img: any) => {
+      // Remove preview key if present
+      delete img.preview;
+
+      // ⚠️ Normalize `src` to relative path if it's a full URL
+      if (img.src && typeof img.src === 'string' && img.src.startsWith('http://localhost:3000/')) {
+        img.src = img.src.replace(/^http:\/\/localhost:3000\//, '');
+      }
+    });
+
+    formData.sale = true;
+    formData.tags = ['s', 'm', 'pink', 'blue', 'biba'];
+
+    if (this.productIdToUpdate) {
+      // 🔄 Update
+      this.productService.updateProduct(this.productIdToUpdate, formData).subscribe({
+        next: (res) => {
+          console.log('✅ Product updated:', res);
+          alert('Product updated successfully!');
+          this.productForm.reset();
+          this.productIdToUpdate = null;
+          this.checker = 'submitted'; // Reset checker
+        },
+        error: (err) => {
+          console.error('❌ Error updating product:', err);
+          alert('Failed to update product.');
+        },
       });
-
-      // Static values
-      formData.sale = true;
-      formData.tags = ['s', 'm', 'pink', 'blue', 'biba'];
-
-      // Call service
+    } else {
+      // 🆕 Create
       this.productService.createProduct(formData).subscribe({
         next: (res) => {
           console.log('✅ Product created:', res);
           alert('Product created successfully!');
           this.productForm.reset();
+           this.checker = 'submitted'; // Reset checker
         },
         error: (err) => {
           console.error('❌ Error creating product:', err);
           alert('Failed to create product.');
         },
       });
-    } else {
-      this.markFormGroupTouched(this.productForm);
-      console.warn('⚠️ Form Invalid');
     }
+  } else {
+    this.markFormGroupTouched(this.productForm);
+    console.warn('⚠️ Form Invalid');
   }
+}
+
+
 
   markFormGroupTouched(formGroup: FormGroup | FormArray) {
     (Object as any).values(formGroup.controls).forEach((control: any) => {
@@ -257,4 +370,53 @@ export class AddProductComponent {
       }
     }, 200); // Delay ensures tab is visible before focusing
   }
+
+
+
+
+patchFormData(product: any) {
+  this.productIdToUpdate = product._id; // Set ID for update
+
+  this.productForm.patchValue({
+    title: product.title,
+    description: product.description,
+    type: product.type,
+    brand: product.brand,
+    collection: product.collection,
+    category: product.category,
+    price: product.price,
+    discount: product.discount,
+    stock: product.stock,
+    newProduct: product.new,
+  });
+
+  this.imageDetails.clear();
+
+  product.images.forEach((image: any) => {
+    const variants = product.variants.filter(
+      (variant: any) => variant.image_id === image.image_id
+    );
+
+    const variantFormGroups = variants.map((variant: any) =>
+      this.fb.group({
+        sku: [variant.sku, Validators.required],
+        size: [variant.size, Validators.required],
+        color: [variant.color, Validators.required],
+      })
+    );
+
+    const imageFormGroup = this.fb.group({
+      alt: [image.alt, Validators.required],
+      src: [`http://localhost:3000/${image.src}`, Validators.required],
+      preview: [`http://localhost:3000/${image.src}`],
+      'variant Details': this.fb.array(variantFormGroups, Validators.required),
+    });
+
+    this.imageDetails.push(imageFormGroup);
+  });
+}
+
+
+
+
 }

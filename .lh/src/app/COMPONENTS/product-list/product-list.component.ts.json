@@ -1,0 +1,98 @@
+{
+    "sourceFile": "src/app/COMPONENTS/product-list/product-list.component.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 20,
+            "patches": [
+                {
+                    "date": 1753018490767,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1753018611914,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,15 +8,14 @@\n   templateUrl: './product-list.component.html',\r\n   styleUrl: './product-list.component.scss'\r\n })\r\n export class ProductListComponent {\r\n+  products: any[] = [];\r\n \r\n+  constructor(private productService: ProductService) {}\r\n \r\n-  constructor(private productService: ProductService) { }\r\n-\r\n   ngOnInit() {\r\n-    this.productService.getAllProducts().subscribe(products => {\r\n-      console.log(products);\r\n+    this.productService.getAllProducts().subscribe((products) => {\r\n+      this.products = products;\r\n     });\r\n   }\r\n-\r\n-}\r\n+}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1753018637471,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,11 +1,12 @@\n import { Component } from '@angular/core';\r\n import { ProductService } from '../../services/product.service';\r\n+import { NgFor } from '@angular/common';\r\n \r\n @Component({\r\n   selector: 'app-product-list',\r\n   standalone: true,\r\n-  imports: [],\r\n+  imports: [NgFor],\r\n   templateUrl: './product-list.component.html',\r\n   styleUrl: './product-list.component.scss'\r\n })\r\n export class ProductListComponent {\r\n"
+                },
+                {
+                    "date": 1753018644496,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,12 @@\n import { Component } from '@angular/core';\r\n import { ProductService } from '../../services/product.service';\r\n-import { NgFor } from '@angular/common';\r\n+import { NgFor, NgIf } from '@angular/common';\r\n \r\n @Component({\r\n   selector: 'app-product-list',\r\n   standalone: true,\r\n-  imports: [NgFor],\r\n+  imports: [NgFor, NgIf],\r\n   templateUrl: './product-list.component.html',\r\n   styleUrl: './product-list.component.scss'\r\n })\r\n export class ProductListComponent {\r\n"
+                },
+                {
+                    "date": 1753018781342,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,22 +1,38 @@\n import { Component } from '@angular/core';\r\n import { ProductService } from '../../services/product.service';\r\n-import { NgFor, NgIf } from '@angular/common';\r\n+import { CommonModule, NgFor, NgIf } from '@angular/common';\r\n+import { MatTableModule } from '@angular/material/table';\r\n+import { MatCardModule } from '@angular/material/card';\r\n+import { MatIconModule } from '@angular/material/icon';\r\n+import { MatPaginator } from '@angular/material/paginator';\r\n+import { MatSort } from '@angular/material/sort';\r\n+import { MatTableDataSource } from '@angular/material/table';\r\n+import { ViewChild, OnInit } from '@angular/core';\r\n \r\n @Component({\r\n   selector: 'app-product-list',\r\n   standalone: true,\r\n-  imports: [NgFor, NgIf],\r\n+  imports: [NgFor, NgIf,\r\n+        CommonModule,\r\n+    MatTableModule,\r\n+    MatCardModule,\r\n+    MatIconModule\r\n+  ],\r\n\\ No newline at end of file\n   templateUrl: './product-list.component.html',\r\n   styleUrl: './product-list.component.scss'\r\n })\r\n export class ProductListComponent {\r\n   products: any[] = [];\r\n+  displayedColumns: string[] = [\r\n+    'title', 'brand', 'category', 'price', 'discount', 'stock', 'tags', 'variants', 'image'\r\n+  ];\r\n \r\n   constructor(private productService: ProductService) {}\r\n \r\n   ngOnInit() {\r\n     this.productService.getAllProducts().subscribe((products) => {\r\n       this.products = products;\r\n     });\r\n   }\r\n-}\n+}\r\n+\r\n"
+                },
+                {
+                    "date": 1753018886978,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,16 +22,18 @@\n   styleUrl: './product-list.component.scss'\r\n })\r\n export class ProductListComponent {\r\n   products: any[] = [];\r\n-  displayedColumns: string[] = [\r\n-    'title', 'brand', 'category', 'price', 'discount', 'stock', 'tags', 'variants', 'image'\r\n-  ];\r\n+displayedColumns: string[] = [\r\n+  'title', 'brand', 'category', 'price', 'discount', 'stock', 'tags', 'variants', 'image', 'actions'\r\n+];\r\n \r\n+\r\n   constructor(private productService: ProductService) {}\r\n \r\n   ngOnInit() {\r\n     this.productService.getAllProducts().subscribe((products) => {\r\n\\ No newline at end of file\n       this.products = products;\r\n     });\r\n   }\r\n-}\n+}\r\n+\r\n"
+                },
+                {
+                    "date": 1753018919900,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,5 +34,28 @@\n     this.productService.getAllProducts().subscribe((products) => {\r\n       this.products = products;\r\n     });\r\n   }\r\n+\r\n+\r\n+\r\n+  viewProduct(product: any) {\r\n+  console.log('View:', product);\r\n+  // Navigate to view page or open dialog\r\n }\r\n+\r\n+editProduct(product: any) {\r\n+  console.log('Edit:', product);\r\n+  // Navigate to edit page or open dialog\r\n+}\r\n+\r\n+deleteProduct(id: string) {\r\n+  if (confirm('Are you sure you want to delete this product?')) {\r\n+    this.productService.deleteProduct(id).subscribe(() => {\r\n+      this.products = this.products.filter(p => p._id !== id);\r\n+      console.log('Deleted:', id);\r\n+    });\r\n+  }\r\n+}\r\n+\r\n+}\r\n+\r\n"
+                },
+                {
+                    "date": 1753019643156,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,9 @@\n })\r\n export class ProductListComponent {\r\n   products: any[] = [];\r\n displayedColumns: string[] = [\r\n-  'title', 'brand', 'category', 'price', 'discount', 'stock', 'tags', 'variants', 'image', 'actions'\r\n+  'title', 'brand', 'category', 'price', 'discount', 'stock', 'tags','image', 'actions'\r\n ];\r\n \r\n \r\n   constructor(private productService: ProductService) {}\r\n"
+                },
+                {
+                    "date": 1753019658204,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,9 @@\n })\r\n export class ProductListComponent {\r\n   products: any[] = [];\r\n displayedColumns: string[] = [\r\n-  'title', 'brand', 'category', 'price', 'discount', 'stock', 'tags','image', 'actions'\r\n+  'title', 'brand', 'category', 'price', 'discount', 'stock','image', 'actions'\r\n ];\r\n \r\n \r\n   constructor(private productService: ProductService) {}\r\n"
+                },
+                {
+                    "date": 1753019891908,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,9 @@\n import { CommonModule, NgFor, NgIf } from '@angular/common';\r\n import { MatTableModule } from '@angular/material/table';\r\n import { MatCardModule } from '@angular/material/card';\r\n import { MatIconModule } from '@angular/material/icon';\r\n+import { MatMenuModule } from '@angular/material/menu';\r\n import { MatPaginator } from '@angular/material/paginator';\r\n import { MatSort } from '@angular/material/sort';\r\n import { MatTableDataSource } from '@angular/material/table';\r\n import { ViewChild, OnInit } from '@angular/core';\r\n@@ -15,9 +16,10 @@\n   imports: [NgFor, NgIf,\r\n         CommonModule,\r\n     MatTableModule,\r\n     MatCardModule,\r\n-    MatIconModule\r\n+    MatIconModule,\r\n+    MatMenuModule,\r\n   ],\r\n   templateUrl: './product-list.component.html',\r\n   styleUrl: './product-list.component.scss'\r\n })\r\n"
+                },
+                {
+                    "date": 1753020515326,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { Component } from '@angular/core';\r\n+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\r\n import { ProductService } from '../../services/product.service';\r\n import { CommonModule, NgFor, NgIf } from '@angular/common';\r\n import { MatTableModule } from '@angular/material/table';\r\n import { MatCardModule } from '@angular/material/card';\r\n@@ -22,16 +22,21 @@\n   ],\r\n   templateUrl: './product-list.component.html',\r\n   styleUrl: './product-list.component.scss'\r\n })\r\n-export class ProductListComponent {\r\n+export class ProductListComponent implements OnChanges{\r\n+    @Input() product: any;\r\n   products: any[] = [];\r\n displayedColumns: string[] = [\r\n   'title', 'brand', 'category', 'price', 'discount', 'stock','image', 'actions'\r\n ];\r\n \r\n \r\n   constructor(private productService: ProductService) {}\r\n+  // ngOnChanges(changes: SimpleChanges): void {\r\n+  //   if (changes['product'] && this.product) {\r\n+  //   }\r\n+  // }\r\n \r\n   ngOnInit() {\r\n     this.productService.getAllProducts().subscribe((products) => {\r\n       this.products = products;\r\n"
+                },
+                {
+                    "date": 1753020524132,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,12 +31,12 @@\n ];\r\n \r\n \r\n   constructor(private productService: ProductService) {}\r\n-  // ngOnChanges(changes: SimpleChanges): void {\r\n-  //   if (changes['product'] && this.product) {\r\n-  //   }\r\n-  // }\r\n+  ngOnChanges(changes: SimpleChanges): void {\r\n+    if (changes['product'] && this.product) {\r\n+    }\r\n+  }\r\n \r\n   ngOnInit() {\r\n     this.productService.getAllProducts().subscribe((products) => {\r\n       this.products = products;\r\n"
+                },
+                {
+                    "date": 1753020551341,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -51,8 +51,9 @@\n }\r\n \r\n editProduct(product: any) {\r\n   console.log('Edit:', product);\r\n+  this.product = product;\r\n   // Navigate to edit page or open dialog\r\n }\r\n \r\n deleteProduct(id: string) {\r\n"
+                },
+                {
+                    "date": 1753020720589,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';\r\n+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';\r\n import { ProductService } from '../../services/product.service';\r\n import { CommonModule, NgFor, NgIf } from '@angular/common';\r\n import { MatTableModule } from '@angular/material/table';\r\n import { MatCardModule } from '@angular/material/card';\r\n@@ -23,9 +23,9 @@\n   templateUrl: './product-list.component.html',\r\n   styleUrl: './product-list.component.scss'\r\n })\r\n export class ProductListComponent implements OnChanges{\r\n-    @Input() product: any;\r\n+    @Output() dataEmitter = new EventEmitter<string>();\r\n   products: any[] = [];\r\n displayedColumns: string[] = [\r\n   'title', 'brand', 'category', 'price', 'discount', 'stock','image', 'actions'\r\n ];\r\n"
+                },
+                {
+                    "date": 1753020732623,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -31,12 +31,12 @@\n ];\r\n \r\n \r\n   constructor(private productService: ProductService) {}\r\n-  ngOnChanges(changes: SimpleChanges): void {\r\n-    if (changes['product'] && this.product) {\r\n-    }\r\n-  }\r\n+  // ngOnChanges(changes: SimpleChanges): void {\r\n+  //   if (changes['product'] && this.product) {\r\n+  //   }\r\n+  // }\r\n \r\n   ngOnInit() {\r\n     this.productService.getAllProducts().subscribe((products) => {\r\n       this.products = products;\r\n"
+                },
+                {
+                    "date": 1753020754300,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n   ],\r\n   templateUrl: './product-list.component.html',\r\n   styleUrl: './product-list.component.scss'\r\n })\r\n-export class ProductListComponent implements OnChanges{\r\n+export class ProductListComponent {\r\n     @Output() dataEmitter = new EventEmitter<string>();\r\n   products: any[] = [];\r\n displayedColumns: string[] = [\r\n   'title', 'brand', 'category', 'price', 'discount', 'stock','image', 'actions'\r\n@@ -51,9 +51,9 @@\n }\r\n \r\n editProduct(product: any) {\r\n   console.log('Edit:', product);\r\n-  this.product = product;\r\n+  this.dataEmitter.emit(product);\r\n   // Navigate to edit page or open dialog\r\n }\r\n \r\n deleteProduct(id: string) {\r\n"
+                },
+                {
+                    "date": 1753021138011,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -37,11 +37,9 @@\n   //   }\r\n   // }\r\n \r\n   ngOnInit() {\r\n-    this.productService.getAllProducts().subscribe((products) => {\r\n-      this.products = products;\r\n-    });\r\n+    this.productList();\r\n   }\r\n \r\n \r\n \r\n@@ -55,13 +53,21 @@\n   this.dataEmitter.emit(product);\r\n   // Navigate to edit page or open dialog\r\n }\r\n \r\n+\r\n+productList() {\r\n+      this.productService.getAllProducts().subscribe((products) => {\r\n+      this.products = products;\r\n+    });\r\n+}\r\n+\r\n deleteProduct(id: string) {\r\n   if (confirm('Are you sure you want to delete this product?')) {\r\n     this.productService.deleteProduct(id).subscribe(() => {\r\n       this.products = this.products.filter(p => p._id !== id);\r\n       console.log('Deleted:', id);\r\n+      this.productList();\r\n     });\r\n   }\r\n }\r\n \r\n"
+                },
+                {
+                    "date": 1753022194487,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -56,8 +56,9 @@\n \r\n \r\n productList() {\r\n       this.productService.getAllProducts().subscribe((products) => {\r\n+        console.log('Products:', products);\r\n       this.products = products;\r\n     });\r\n }\r\n \r\n"
+                },
+                {
+                    "date": 1753067754768,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -24,8 +24,9 @@\n   styleUrl: './product-list.component.scss'\r\n })\r\n export class ProductListComponent {\r\n     @Output() dataEmitter = new EventEmitter<string>();\r\n+    @Input() listUpdate: any;\r\n   products: any[] = [];\r\n displayedColumns: string[] = [\r\n   'title', 'brand', 'category', 'price', 'discount', 'stock','image', 'actions'\r\n ];\r\n"
+                },
+                {
+                    "date": 1753067787344,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n   ],\r\n   templateUrl: './product-list.component.html',\r\n   styleUrl: './product-list.component.scss'\r\n })\r\n-export class ProductListComponent {\r\n+export class ProductListComponent implements OnInit, OnChanges {\r\n     @Output() dataEmitter = new EventEmitter<string>();\r\n     @Input() listUpdate: any;\r\n   products: any[] = [];\r\n displayedColumns: string[] = [\r\n@@ -32,8 +32,13 @@\n ];\r\n \r\n \r\n   constructor(private productService: ProductService) {}\r\n+  ngOnChanges(changes: SimpleChanges): void {\r\n+    if (changes['listUpdate'] && this.listUpdate) {\r\n+      this.productList();\r\n+    }\r\n+  }\r\n   // ngOnChanges(changes: SimpleChanges): void {\r\n   //   if (changes['product'] && this.product) {\r\n   //   }\r\n   // }\r\n"
+                },
+                {
+                    "date": 1753068036362,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -33,9 +33,9 @@\n \r\n \r\n   constructor(private productService: ProductService) {}\r\n   ngOnChanges(changes: SimpleChanges): void {\r\n-    if (changes['listUpdate'] && this.listUpdate) {\r\n+    if (changes['listUpdate'] && this.listUpdate == 'submitted') {\r\n       this.productList();\r\n     }\r\n   }\r\n   // ngOnChanges(changes: SimpleChanges): void {\r\n"
+                }
+            ],
+            "date": 1753018490767,
+            "name": "Commit-0",
+            "content": "import { Component } from '@angular/core';\r\nimport { ProductService } from '../../services/product.service';\r\n\r\n@Component({\r\n  selector: 'app-product-list',\r\n  standalone: true,\r\n  imports: [],\r\n  templateUrl: './product-list.component.html',\r\n  styleUrl: './product-list.component.scss'\r\n})\r\nexport class ProductListComponent {\r\n\r\n\r\n  constructor(private productService: ProductService) { }\r\n\r\n  ngOnInit() {\r\n    this.productService.getAllProducts().subscribe(products => {\r\n      console.log(products);\r\n    });\r\n  }\r\n\r\n}\r\n"
+        }
+    ]
+}

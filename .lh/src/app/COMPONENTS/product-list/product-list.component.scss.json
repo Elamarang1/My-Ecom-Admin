@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/app/COMPONENTS/product-list/product-list.component.scss",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1753018801029,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1753018801029,
+            "name": "Commit-0",
+            "content": ".full-width-table {\r\n  width: 100%;\r\n  overflow-x: auto;\r\n  img {\r\n    border-radius: 4px;\r\n    object-fit: cover;\r\n  }\r\n}\r\n"
+        }
+    ]
+}
