@@ -1,256 +1,273 @@
-<div class="container-fluid">
-  <div class="row d-flex justify-content-center">
-    <div class="col-7 border">
+<div class="container-fluid py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-9">
       <form [formGroup]="productForm" (ngSubmit)="Submit()">
-        <mat-tab-group #tabGroup>
-          <!-- First Tab -->
-          <mat-tab label="Basic Info">
-            <ng-template matTabContent>
-              <div class="container">
-                <mat-card class="shadow-sm">
-                  <mat-card-header>
-                    <mat-card-title class="h4 text-primary"
-                      >Add Product</mat-card-title
-                    >
-                  </mat-card-header>
-                  <mat-card-content>
-                    <div class="row g-3">
-                      <div
-                        class="col-md-4"
-                        *ngFor="
-                          let field of [
-                            { label: 'Title', control: 'title', type: 'text' },
-                            { label: 'Price', control: 'price', type: 'text' },
-                            {
-                              label: 'Discount',
-                              control: 'discount',
-                              type: 'text'
-                            },
-                            { label: 'Stock', control: 'stock', type: 'text' }
-                          ]
-                        "
-                      >
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>{{ field.label }}</mat-label>
-                          <input
-                            matInput
-                            [formControlName]="field.control"
-                            [type]="field.type"
-                          />
-                        </mat-form-field>
-                      </div>
+        <mat-tab-group #tabGroup class="shadow-sm bg-white rounded-3">
+          <!-- TAB 1: BASIC INFO -->
+<mat-tab label="Basic Info">
+  <ng-template matTabContent>
+    <!-- 🛍️ Add Product -->
+    <mat-card class="p-4 my-3 shadow-sm border-0 rounded-4">
+      <mat-card-header>
+        <mat-card-title class="h4 text-primary fw-bold">
+          🛍️ Add Product
+        </mat-card-title>
+      </mat-card-header>
 
-                      <div class="col-md-4">
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>Type</mat-label>
-                          <mat-select formControlName="type">
-                            <mat-option
-                              *ngFor="let t of typeArray"
-                              [value]="t.value"
-                              >{{ t.key }}</mat-option
-                            >
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
+      <mat-card-content class="pt-3">
+        <!-- 🧾 Basic Info -->
+        <div class="mb-4">
+          <h6 class="text-secondary fw-semibold mb-3">Basic Info</h6>
+          <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Title</mat-label>
+                <input matInput type="text" formControlName="title" />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
 
-                      <div class="col-md-4">
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>Brand</mat-label>
-                          <mat-select formControlName="brand">
-                            <mat-option
-                              *ngFor="let b of brandArray"
-                              [value]="b.value"
-                              >{{ b.key }}</mat-option
-                            >
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
+        <!-- 💰 Pricing & Stock -->
+        <div class="mb-4">
+          <h6 class="text-secondary fw-semibold mb-3">Pricing & Stock</h6>
+          <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Price</mat-label>
+                <input matInput type="number" formControlName="price" />
+              </mat-form-field>
+            </div>
 
-                      <div class="col-md-4">
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>Collection</mat-label>
-                          <mat-select formControlName="collection" multiple>
-                            <mat-option
-                              *ngFor="let c of collectionArray"
-                              [value]="c.value"
-                              >{{ c.key }}</mat-option
-                            >
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
+            <div class="col-md-6 col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Discount</mat-label>
+                <input matInput type="number" formControlName="discount" />
+              </mat-form-field>
+            </div>
 
-                      <div class="col-md-4">
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>Category</mat-label>
-                          <mat-select formControlName="category">
-                            <mat-option
-                              *ngFor="let c of categoryArray"
-                              [value]="c.value"
-                              >{{ c.key }}</mat-option
-                            >
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
+            <div class="col-md-6 col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Stock</mat-label>
+                <input matInput type="number" formControlName="stock" />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
 
-                      <div class="col-md-4">
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>New Product</mat-label>
-                          <mat-select formControlName="newProduct">
-                            <mat-option [value]="true">Yes</mat-option>
-                            <mat-option [value]="false">No</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
+        <!-- 🏷️ Category & Brand -->
+        <div class="mb-4">
+          <h6 class="text-secondary fw-semibold mb-3">Category & Brand</h6>
+          <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Type</mat-label>
+                <mat-select formControlName="type">
+                  <mat-option *ngFor="let o of typeArray" [value]="o.value">
+                    {{ o.key }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
 
-                      <div class="col-md-12">
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>Description</mat-label>
-                          <textarea
-                            matInput
-                            formControlName="description"
-                            rows="4"
-                          ></textarea>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </mat-card-content>
-                </mat-card>
-              </div>
-            </ng-template>
-          </mat-tab>
+            <div class="col-md-6 col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Brand</mat-label>
+                <mat-select formControlName="brand">
+                  <mat-option *ngFor="let o of brandArray" [value]="o.value">
+                    {{ o.key }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
 
-          <!-- Second Tab -->
+            <div class="col-md-6 col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Category</mat-label>
+                <mat-select formControlName="category">
+                  <mat-option *ngFor="let o of categoryArray" [value]="o.value">
+                    {{ o.key }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Collection</mat-label>
+                <mat-select formControlName="collection" multiple>
+                  <mat-option *ngFor="let c of collectionArray" [value]="c.value">
+                    {{ c.key }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>New Product</mat-label>
+                <mat-select formControlName="newProduct">
+                  <mat-option [value]="true">Yes</mat-option>
+                  <mat-option [value]="false">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <!-- 📝 Description -->
+        <div>
+          <h6 class="text-secondary fw-semibold mb-3">Description</h6>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Description</mat-label>
+            <textarea matInput rows="4" formControlName="description"></textarea>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- 📦 Product Dimensions -->
+    <mat-card class="p-4 my-3 shadow-sm border-0 rounded-4">
+      <mat-card-header>
+        <mat-card-title class="h4 text-primary fw-bold">
+          📦 Product Dimensions
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="pt-3">
+        <div class="row g-4">
+          <div
+            class="col-12 col-sm-6 col-lg-3"
+            *ngFor="let dim of [
+              { label: 'Length (cm)', control: 'length' },
+              { label: 'Breadth (cm)', control: 'breadth' },
+              { label: 'Height (cm)', control: 'height' },
+              { label: 'Weight (kg)', control: 'weight' }
+            ]"
+          >
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ dim.label }}</mat-label>
+              <input matInput type="number" [formControlName]="dim.control" />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-template>
+</mat-tab>
+
+
+          <!-- TAB 2: IMAGES & VARIANTS -->
           <mat-tab label="Images & Variants">
-            <div class="container py-4">
+            <div class="p-3">
               <div formArrayName="images Details">
                 <div
                   *ngFor="let image of imageDetails.controls; let i = index"
                   [formGroupName]="i"
-                  class="mb-4"
+                  class="mb-5"
                 >
-                  <div class="row justify-content-center">
-                    <div class="col-12 col-lg-10">
-                      <mat-card class="shadow-sm rounded-3">
-                        <mat-card-header
-                          class="d-flex justify-content-between align-items-center"
+                  <mat-card class="shadow-sm p-3 rounded-4">
+                    <mat-card-header class="d-flex justify-content-between">
+                      <mat-card-title>Image {{ i + 1 }}</mat-card-title>
+                      <button
+                        mat-icon-button
+                        color="warn"
+                        type="button"
+                        (click)="removeImage(i)"
+                        *ngIf="imageDetails.length > 1"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </mat-card-header>
+
+                    <mat-card-content>
+                      <div class="row g-3 align-items-center">
+                        <!-- Image Upload -->
+                        <div class="col-md-6">
+                          <label class="form-label">Upload Image</label>
+                          <input
+                            type="file"
+                            class="form-control"
+                            accept="image/*"
+                            (change)="onFileChange($event, i)"
+                          />
+                        </div>
+                        <!-- Preview -->
+                        <div class="col-md-6" *ngIf="image.get('preview')?.value">
+                          <img
+                            [src]="image.get('preview')?.value"
+                            alt="Preview"
+                            class="img-fluid rounded shadow-sm border"
+                            width="200"
+                          />
+                        </div>
+                      </div>
+
+                      <mat-divider class="my-4"></mat-divider>
+
+                      <!-- Variants -->
+                      <h5>Variants</h5>
+                      <div formArrayName="variant Details">
+                        <div
+                          *ngFor="let variant of getVariants(i).controls; let j = index"
+                          [formGroupName]="j"
+                          class="row g-3 align-items-center mb-3"
                         >
-                          <mat-card-title>Image {{ i + 1 }}</mat-card-title>
+                          <div class="col-md-3">
+                            <mat-form-field appearance="outline" class="w-100">
+                              <mat-label>SKU</mat-label>
+                              <mat-select formControlName="sku">
+                                <mat-option *ngFor="let sku of skuOptions" [value]="sku">{{ sku }}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+
+                          <div class="col-md-3">
+                            <mat-form-field appearance="outline" class="w-100">
+                              <mat-label>Size</mat-label>
+                              <input matInput formControlName="size" />
+                            </mat-form-field>
+                          </div>
+
+                          <div class="col-md-3">
+                            <mat-form-field appearance="outline" class="w-100">
+                              <mat-label>Color</mat-label>
+                              <mat-select formControlName="color">
+                                <mat-option *ngFor="let color of colorOptions" [value]="color">{{ color }}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+
+                          <div class="col-md-3 text-end">
+                            <button
+                              mat-icon-button
+                              color="warn"
+                              type="button"
+                              (click)="removeVariant(i, j)"
+                              *ngIf="getVariants(i).length > 1"
+                            >
+                              <mat-icon>remove_circle</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="text-end">
                           <button
-                            mat-icon-button
-                            color="warn"
+                            mat-stroked-button
+                            color="primary"
                             type="button"
-                            (click)="removeImage(i)"
-                            *ngIf="imageDetails.length > 1"
+                            (click)="addVariant(i)"
                           >
-                            <mat-icon>delete</mat-icon>
+                            <mat-icon>add</mat-icon> Add Variant
                           </button>
-                        </mat-card-header>
-
-                        <mat-card-content class="pt-3 px-3 pb-2">
-                          <mat-divider></mat-divider>
-                          <div class="row g-3 pt-2">
-                            <div class="col-md-6">
-                              <label class="form-label">Upload Image</label>
-                              <input
-                                type="file"
-                                class="form-control"
-                                accept="image/*"
-                                (change)="onFileChange($event, i)"
-                              />
-                            </div>
-
-                            <div
-                              class="col-6"
-                              *ngIf="image.get('preview')?.value"
-                            >
-                              <img
-                                [src]="image.get('preview')?.value"
-                                alt="Preview"
-                                class="img-thumbnail"
-                                width="200"
-                              />
-                            </div>
-                          </div>
-
-                          <mat-divider class="my-4"></mat-divider>
-
-                          <h5 class="mb-3">Variant Details</h5>
-                          <div formArrayName="variant Details">
-                            <div
-                              *ngFor="
-                                let variant of getVariants(i).controls;
-                                let j = index
-                              "
-                              [formGroupName]="j"
-                              class="row g-3 align-items-center mb-2"
-                            >
-<!-- SKU (Dropdown) -->
-<div class="col-md-3">
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>SKU</mat-label>
-    <mat-select formControlName="sku">
-      <mat-option *ngFor="let sku of skuOptions" [value]="sku">
-        {{ sku }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-
-
-                              <div class="col-md-3">
-                                <mat-form-field
-                                  appearance="outline"
-                                  class="w-100"
-                                >
-                                  <mat-label>Size</mat-label>
-                                  <input matInput formControlName="size" />
-                                </mat-form-field>
-                              </div>
-
-    <!-- Color (Dropdown) -->
-    <div class="col-md-3">
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Color</mat-label>
-        <mat-select formControlName="color">
-          <mat-option *ngFor="let color of colorOptions" [value]="color">
-            {{ color }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-                              <div class="col-md-3 d-flex align-items-center">
-                                <button
-                                  mat-icon-button
-                                  color="warn"
-                                  type="button"
-                                  (click)="removeVariant(i, j)"
-                                  *ngIf="getVariants(i).length > 1"
-                                >
-                                  <mat-icon>remove_circle</mat-icon>
-                                </button>
-                              </div>
-                            </div>
-
-                            <div class="text-end mt-3">
-                              <button
-                                mat-stroked-button
-                                color="primary"
-                                type="button"
-                                (click)="addVariant(i)"
-                              >
-                                <mat-icon>add</mat-icon> Add Variant
-                              </button>
-                            </div>
-                          </div>
-                        </mat-card-content>
-                      </mat-card>
-                    </div>
-                  </div>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
                 </div>
               </div>
 
-              <div class="my-3">
+              <!-- Add Image Button -->
+              <div class="text-end mt-3">
                 <button
                   mat-raised-button
                   color="accent"
@@ -261,30 +278,32 @@
                 </button>
               </div>
 
-              <div class="text-end">
+              <!-- Final Submit -->
+              <div class="text-end mt-4">
                 <button mat-raised-button color="primary" type="submit">
-                  <mat-icon>check</mat-icon> Submit
+                  <mat-icon>check</mat-icon> Submit Product
                 </button>
               </div>
             </div>
           </mat-tab>
         </mat-tab-group>
       </form>
-      <div class="row">
-        <div class="p-2 col-12 d-flex justify-content-end align-items-center">
-          <button
-            (click)="goToTab(1)"
-            mat-raised-button
-            color="primary"
-            type="submit"
-          >
-            Next <mat-icon class="ms-1">arrow_forward</mat-icon>
-          </button>
-        </div>
+
+      <!-- Next Button -->
+      <div class="text-end mt-3" *ngIf="tabGroup?.selectedIndex !== 1">
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="goToTab((tabGroup?.selectedIndex ?? 0) + 1)"
+        >
+          Next <mat-icon class="ms-1">arrow_forward</mat-icon>
+        </button>
       </div>
     </div>
   </div>
 </div>
+
 
 
 

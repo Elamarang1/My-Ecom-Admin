@@ -68,8 +68,13 @@ export class AddProductComponent {
   productForm: FormGroup;
   productIdToUpdate: string | null = null;
   checker:any
-  @ViewChild('tabGroup') tabGroup!: MatTabGroup;
+  // @ViewChild('tabGroup') tabGroup!: MatTabGroup;
   @ViewChild('imageTabFocus', { static: false }) imageTabFocus!: ElementRef;
+  @ViewChild('tabGroup') tabGroup!: MatTabGroup;
+
+
+
+
   imageUrl: any[] = [
     '../../../assts/add-img.webp',
     '../../../assts/add-img.webp',
@@ -78,6 +83,7 @@ export class AddProductComponent {
   ];
 
   typeArray = [
+    { key: 'Homemade Products', value: 'Homemade Products' },
     { key: 'Fashion', value: 'fashion' },
     { key: 'Shoes', value: 'shoes' },
     { key: 'Bags', value: 'bags' },
@@ -94,8 +100,10 @@ export class AddProductComponent {
   ];
 
   brandArray = [
+    { key: 'Dreamy Craft', value: 'Dreamy Craft' },
     { key: 'Nike', value: 'nike' },
     {key:'Iphone', value: 'iphone'},
+    { key: 'samsung', value: 'samsung' },
     { key: 'Zara', value: 'zara' },
     { key: 'Denim', value: 'denim' },
     { key: 'Madame', value: 'madame' },
@@ -113,6 +121,7 @@ export class AddProductComponent {
   ];
 
   categoryArray = [
+    { key: 'Homemade Products', value: 'Homemade Products' },
     { key: 'Fashion', value: 'Women' },
     { key: 'Shoes', value: 'shoes' },
     { key: 'Bags', value: 'bags' },
@@ -146,6 +155,10 @@ colorOptions: string[] = ['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow', 'P
       stock: ['', Validators.required],
       newProduct: [false, Validators.requiredTrue],
       'images Details': this.fb.array([], Validators.required),
+        length: [0],
+  breadth: [0],
+  height: [0],
+  weight: [0]
     });
 
     this.addImage(); // Add initial image entry
@@ -213,84 +226,6 @@ colorOptions: string[] = ['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow', 'P
       reader.onerror = (error) => reject(error);
     });
   }
-
-  // Submit() {
-  //   if (this.productForm.valid) {
-  //     const formData = JSON.parse(JSON.stringify(this.productForm.value));
-
-  //     // Clean preview fields if present
-  //     formData['images Details'].forEach((img: any) => {
-  //       delete img.preview;
-  //     });
-
-  //     // Static values
-  //     formData.sale = true;
-  //     formData.tags = ['s', 'm', 'pink', 'blue', 'biba'];
-
-  //     // Call service
-  //     this.productService.createProduct(formData).subscribe({
-  //       next: (res) => {
-  //         console.log('✅ Product created:', res);
-  //         alert('Product created successfully!');
-  //         this.productForm.reset();
-  //       },
-  //       error: (err) => {
-  //         console.error('❌ Error creating product:', err);
-  //         alert('Failed to create product.');
-  //       },
-  //     });
-  //   } else {
-  //     this.markFormGroupTouched(this.productForm);
-  //     console.warn('⚠️ Form Invalid');
-  //   }
-  // }
-
-
-//   Submit() {
-//   if (this.productForm.valid) {
-//     const formData = JSON.parse(JSON.stringify(this.productForm.value));
-
-//     // Clean up previews
-//     formData['images Details'].forEach((img: any) => {
-//       delete img.preview;
-//     });
-
-//     formData.sale = true;
-//     formData.tags = ['s', 'm', 'pink', 'blue', 'biba'];
-
-//     if (this.productIdToUpdate) {
-//       // 🔄 Update
-//       this.productService.updateProduct(this.productIdToUpdate, formData).subscribe({
-//         next: (res) => {
-//           console.log('✅ Product updated:', res);
-//           alert('Product updated successfully!');
-//           this.productForm.reset();
-//           this.productIdToUpdate = null; // Reset after update
-//         },
-//         error: (err) => {
-//           console.error('❌ Error updating product:', err);
-//           alert('Failed to update product.');
-//         },
-//       });
-//     } else {
-//       // 🆕 Create
-//       this.productService.createProduct(formData).subscribe({
-//         next: (res) => {
-//           console.log('✅ Product created:', res);
-//           alert('Product created successfully!');
-//           this.productForm.reset();
-//         },
-//         error: (err) => {
-//           console.error('❌ Error creating product:', err);
-//           alert('Failed to create product.');
-//         },
-//       });
-//     }
-//   } else {
-//     this.markFormGroupTouched(this.productForm);
-//     console.warn('⚠️ Form Invalid');
-//   }
-// }
 
 
 Submit() {
@@ -360,16 +295,12 @@ Submit() {
     });
   }
 
-  goToTab(index: number) {
-    this.tabGroup.selectedIndex = index;
+goToTab(index: number): void {
 
-    // Allow time for tab change before shifting focus
-    setTimeout(() => {
-      if (index === 1 && this.imageTabFocus) {
-        this.imageTabFocus.nativeElement.focus();
-      }
-    }, 200); // Delay ensures tab is visible before focusing
-  }
+  this.tabGroup.selectedIndex = index;
+
+  console.log('Tab changed to index:', this.tabGroup.selectedIndex);
+}
 
 
 
@@ -388,6 +319,10 @@ patchFormData(product: any) {
     discount: product.discount,
     stock: product.stock,
     newProduct: product.new,
+        length: product.dimensions?.length || 0,
+    breadth: product.dimensions?.breadth || 0,
+    height: product.dimensions?.height || 0,
+    weight: product.dimensions?.weight || 0
   });
 
   this.imageDetails.clear();

@@ -28,7 +28,7 @@ export class ProductListComponent implements OnInit, OnChanges {
     @Input() listUpdate: any;
   products: any[] = [];
 displayedColumns: string[] = [
-  'title', 'brand', 'category', 'price', 'discount', 'stock','image', 'actions'
+  'title', 'brand', 'category', 'price', 'discount', 'discountedPrice', 'stock','image', 'actions'
 ];
 
 

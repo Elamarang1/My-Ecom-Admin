@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 1,
+            "activePatchIndex": 2,
             "patches": [
                 {
                     "date": 1749784622103,
@@ -12,6 +12,10 @@
                 {
                     "date": 1751084095162,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,6 +6,6 @@\n import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';\r\n import { provideHttpClient } from '@angular/common/http';\r\n \r\n export const appConfig: ApplicationConfig = {\r\n-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideAnimationsAsync(),provideHttpClient()]\r\n+  providers: [provideZoneChangeDetection({ eventCoalescing: true }),provideHttpClient(), provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideAnimationsAsync(),provideHttpClient()]\r\n };\r\n"
+                },
+                {
+                    "date": 1761409161605,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,9 +3,9 @@\n \r\n import { routes } from './app.routes';\r\n import { provideClientHydration } from '@angular/platform-browser';\r\n import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';\r\n-import { provideHttpClient } from '@angular/common/http';\r\n+import { provideHttpClient, withFetch } from '@angular/common/http';\r\n \r\n export const appConfig: ApplicationConfig = {\r\n-  providers: [provideZoneChangeDetection({ eventCoalescing: true }),provideHttpClient(), provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideAnimationsAsync(),provideHttpClient()]\r\n+  providers: [provideZoneChangeDetection({ eventCoalescing: true }),provideHttpClient(withFetch()), provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideAnimationsAsync(),provideHttpClient()]\r\n };\r\n"
                 }
             ],
             "date": 1749784622103,

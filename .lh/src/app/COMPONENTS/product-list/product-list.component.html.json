@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 19,
+            "activePatchIndex": 22,
             "patches": [
                 {
                     "date": 1753018530286,
@@ -84,6 +84,18 @@
                 {
                     "date": 1753020025927,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -63,14 +63,14 @@\n   <th mat-header-cell *matHeaderCellDef> Actions </th>\r\n   <td mat-cell *matCellDef=\"let product\">\r\n     <mat-icon\r\n       [matMenuTriggerFor]=\"actionMenu\"\r\n-      class=\"action-icon menu-icon\"\r\n+      class=\"action-icon menu-icon \"\r\n       fontIcon=\"more_vert\"\r\n-      aria-label=\"Open menu\">\r\n+      aria-label=\"Open menu\" style=\" cursor: pointer;\">\r\n     </mat-icon>\r\n \r\n-    <mat-menu #actionMenu=\"matMenu\">\r\n+    <mat-menu #actionMenu=\"matMenu\" >\r\n       <button mat-menu-item (click)=\"viewProduct(product)\">\r\n         <mat-icon fontIcon=\"visibility\" color=\"primary\"></mat-icon>\r\n         <span>View</span>\r\n       </button>\r\n"
+                },
+                {
+                    "date": 1754582265793,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -38,8 +38,17 @@\n       <th mat-header-cell *matHeaderCellDef> Discount (%) </th>\r\n       <td mat-cell *matCellDef=\"let product\"> {{ product.discount }} </td>\r\n     </ng-container>\r\n \r\n+    <!-- Discounted Price -->\r\n+<ng-container matColumnDef=\"discountedPrice\">\r\n+  <th mat-header-cell *matHeaderCellDef> Discounted Price </th>\r\n+  <td mat-cell *matCellDef=\"let product\">\r\n+    ₹{{ product.price - (product.price * product.discount / 100) | number:'1.2-2' }}\r\n+  </td>\r\n+</ng-container>\r\n+\r\n+\r\n     <!-- Stock -->\r\n     <ng-container matColumnDef=\"stock\">\r\n       <th mat-header-cell *matHeaderCellDef> Stock </th>\r\n       <td mat-cell *matCellDef=\"let product\"> {{ product.stock }} </td>\r\n"
+                },
+                {
+                    "date": 1754825746298,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -59,9 +59,9 @@\n     <ng-container matColumnDef=\"image\">\r\n       <th mat-header-cell *matHeaderCellDef> Image </th>\r\n       <td mat-cell *matCellDef=\"let product\">\r\n         <img *ngIf=\"product.images.length\"\r\n-             [src]=\"'http://localhost:3000/' + product.images[0].src\"\r\n+             [src]=\" product.images[0].src\"\r\n              [alt]=\"product.images[0].alt\"\r\n              width=\"60\" height=\"60\" />\r\n       </td>\r\n     </ng-container>\r\n"
+                },
+                {
+                    "date": 1754826137546,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -59,9 +59,9 @@\n     <ng-container matColumnDef=\"image\">\r\n       <th mat-header-cell *matHeaderCellDef> Image </th>\r\n       <td mat-cell *matCellDef=\"let product\">\r\n         <img *ngIf=\"product.images.length\"\r\n-             [src]=\" product.images[0].src\"\r\n+             [src]=\"'http://localhost:3000/' + product.images[0].src\"\r\n              [alt]=\"product.images[0].alt\"\r\n              width=\"60\" height=\"60\" />\r\n       </td>\r\n     </ng-container>\r\n"
                 }
             ],
             "date": 1753018530286,
